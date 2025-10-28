@@ -78,13 +78,13 @@ def get_highest_rated_genre():
     print(f"Highest rated genre: {highest_rated_genre['genre']} with average rating {highest_rated_genre['avg(rating)']}")  
 
 # This function graphs average rating for each genre
-def graph_average_rating_for_genres():
+def graph_average_rating_for_genres(amount):
     matplotlib.use("Agg")
 
     # Compute average rating per genre
     ratings_with_genres = ratings.join(movies, on='movieId', how='inner')
     genres_exploded = ratings_with_genres.withColumn('genre', F.explode(F.split(ratings_with_genres.genres, '\\|')))
-    avg_ratings_by_genre = genres_exploded.groupBy('genre').avg('rating').orderBy('avg(rating)', ascending=False)
+    avg_ratings_by_genre = genres_exploded.groupBy('genre').avg('rating').orderBy('avg(rating)', ascending=False).limit(amount)
     avg_ratings_collected = avg_ratings_by_genre.collect()
 
     # Prepare data for plotting
@@ -109,12 +109,12 @@ def graph_average_rating_for_genres():
     plt.savefig(out_path)
     print(f"Saved chart to {out_path}")
 
-unique_movies(10)
-average_movie_rating()
-highest_rated_movies(10)
-latest_rating()
-get_average_rating_for_movie_per_year(64)
-match_movies_with_genre(10, "Comedy")
-get_average_rating_for_genre()
-get_highest_rated_genre()
-graph_average_rating_for_genres()
+# unique_movies(10)
+# average_movie_rating()
+# highest_rated_movies(10)
+# latest_rating()
+# get_average_rating_for_movie_per_year(64)
+# match_movies_with_genre(10, "Comedy")
+# get_average_rating_for_genre()
+# get_highest_rated_genre()
+graph_average_rating_for_genres(15)
