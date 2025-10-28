@@ -1,6 +1,8 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from datetime import datetime, timezone
+import matplotlib
+import matplotlib.pyplot as plt
 
 # Initialize Spark session
 spark = SparkSession.builder \
@@ -77,9 +79,7 @@ def get_highest_rated_genre():
 
 # This function graphs average rating for each genre
 def graph_average_rating_for_genres():
-    import matplotlib
     matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
 
     # Compute average rating per genre
     ratings_with_genres = ratings.join(movies, on='movieId', how='inner')
